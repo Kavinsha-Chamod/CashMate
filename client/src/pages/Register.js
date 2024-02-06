@@ -1,14 +1,25 @@
 import React from 'react';
-import { Form, Row, Col, Input, Select } from 'antd';
+import { Form, Row, Col, Input, Select, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { RegisterUser } from '../api/users';
 const {Option} = Select;
 
 export default function Register() {
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log('Received values of Form:', values);
-    
+  const onFinish = async (values) => {
+    try {  
+      const res = await RegisterUser(values)
+      if(res.success){
+        message.success(res.message)
+        navigate("/login")
+      }else{
+        message.error(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   };
+
   return (
       <div className='m-5'>
         <div className='flex items-center justify-between'>
@@ -34,7 +45,7 @@ export default function Register() {
               </Form.Item>
             </Col>
             <Col span={6}>
-              <Form.Item label="Mobile" name="mobileNumber" rules={[{ required: true, message: 'Please enter your mobile number' }]}>
+              <Form.Item label="Mobile" name="phoneNumber" rules={[{ required: true, message: 'Please enter your mobile number' }]}>
                 <Input />
               </Form.Item>
             </Col>

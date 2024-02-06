@@ -1,12 +1,24 @@
 import React from 'react';
-import { Form, Row, Col, Input } from 'antd';
+import { Form, Row, Col, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { LoginUser } from '../api/users';
 
 export default function Login() {
   const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log('Received values of Form:', values);
+  const onFinish = async (values) => {
+    try {  
+      const res = await LoginUser(values)
+      if(res.success){
+        message.success(res.message)
+      }else{
+        message.error(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   };
+
+
   return (
     <div className='bg-primary flex items-center justify-center h-screen'>
     <div className='card w-400 p-2'>
