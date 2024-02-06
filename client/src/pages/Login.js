@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/pages/Login.js
 import React from 'react';
 import { Form, Row, Col, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -38,44 +37,3 @@ export default function Login() {
     </div>
   )
 }
-=======
-import React from 'react';
-import { Form, Row, Col, Input } from 'antd';
-import { useNavigate } from 'react-router-dom';
-
-export default function Login() {
-  const navigate = useNavigate();
-  const onFinish = (values) => {
-    console.log('Received values of Form:', values);
-  };
-  return (
-    <div className='bg-primary flex items-center justify-center h-screen'>
-    <div className='card w-400 p-2'>
-    <div className='flex items-center justify-between'>
-    <h1 className='text-2xl'>CASHMATE - LOGIN</h1>
-    </div>
-    <hr/>
-    <Form layout='vertical' onFinish={onFinish}>
-    <Row gutter={16}>
-
-    <Col span={24}>
-    <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Please enter your email' }, { type: 'email', message: 'Please enter a valid email' }]}>
-      <Input />
-    </Form.Item>
-    </Col>
-    
-   <Col span={24}>
-   <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter your password' }]}>
-    <Input.Password />
-   </Form.Item>
-   </Col>
-
-    <button className='primary-contained-btn w-100' type="submit">Login</button>
-    <h1 className='text-sm underline mt-2' onClick={() => navigate("/register")}>Not a Member, Click here to Register</h1>
-    </Row>
-    </Form>
-    </div>
-    </div>
-  )
-}
->>>>>>> 584f65004988f611692a2360e916c46c5e9a89df:client/src/pages/Login.js
