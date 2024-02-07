@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    balance: {
+      type: Number,
+      default: 0,
+    },
     isVerified: {
       type: Boolean,
       default: false,
@@ -47,4 +51,4 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-module.exports = mongoose.model("users", userSchema)
+module.exports = mongoose.model("users", userSchema);

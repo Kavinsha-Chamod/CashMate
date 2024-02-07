@@ -10,6 +10,8 @@ export default function Login() {
       const res = await LoginUser(values)
       if(res.success){
         message.success(res.message)
+        localStorage.setItem("token", res.data)
+        window.location.href="/"
       }else{
         message.error(res.message)
       }
