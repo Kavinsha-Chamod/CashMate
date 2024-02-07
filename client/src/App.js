@@ -2,6 +2,7 @@ import React from 'react';
 import './stylesheet/textElements.css';
 import './stylesheet/formElements.css';
 import './stylesheet/customComponents.css';
+import './stylesheet/layout.css';
 import './stylesheet/theme.css';
 import './stylesheet/alignments.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
