@@ -30,6 +30,9 @@
 .uppercase{
   text-transform: uppercase;
 }
+.lowercase{
+  text-transform: lowercase;
+}
 
 h1{
   padding-bottom: 0 !important;

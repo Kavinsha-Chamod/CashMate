@@ -1,6 +1,7 @@
 :root {
   --primary :#004835;
   --secondary: #ffa600;
+  --tertiary: #6c4701;
 }
 
 .bg-primary{
@@ -8,6 +9,9 @@
 }
 .bg-secondary{
   background-color: var(--secondary) !important;
+}
+.bg-tertiary{
+  background-color: var(--tertiary) !important;
 }
 
 .text-primary {

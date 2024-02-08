@@ -1,6 +1,6 @@
 .card{
   background-color: white;
-  box-shadow: 0 0 3px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.452);
 }
 .loader{
   height: 80px;
@@ -12,6 +12,9 @@
 }
 table{
   border: 1px solid #c4c4c49d;
+}
+.br-3{
+  border-radius: 3px;
 }
 
 @keyframes loader-anim{
