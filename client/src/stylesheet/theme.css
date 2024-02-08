@@ -23,3 +23,15 @@
 .text-black{
   color: black !important;
 }
+.success-bg{
+  background-color: green !important;
+  color: white !important;
+  padding: 10px;
+  border-radius: 3px ;
+}
+.error-bg{
+  background-color: rgb(204, 58, 58) !important;
+  color: white !important;
+  padding: 10px;
+  border-radius: 3px ;
+}

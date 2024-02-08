@@ -35,9 +35,9 @@ export default function DefaultLayout({ children }) {
       onClick: (e) => {
         e.preventDefault();
         localStorage.removeItem("token");
-        navigate("/logout");
+        navigate("/login");
       },
-      path: "/logout",
+      path: "/login",
     },
   ];
 
@@ -73,9 +73,9 @@ export default function DefaultLayout({ children }) {
       onClick: (e) => {
         e.preventDefault();
         localStorage.removeItem("token");
-        navigate("/logout");
+        navigate("/login");
       },
-      path: "/logout",
+      path: "/login",
     },
   ];
 

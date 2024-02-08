@@ -1,7 +1,12 @@
 import React from "react";
 import PageTitle from "../components/PageTitle";
 import {Table} from "antd"
+import TransferFundsModal from "./TransferFundsModal";
 export default function Transactions() {
+  const [showTransferFundsModal, setShowTransferFundsModal] = React.useState(false)
+  const handleOpenModal = () => {
+    setShowTransferFundsModal(true);
+  };
   //antd table formate is this
   const columns = [
     {
@@ -28,13 +33,18 @@ export default function Transactions() {
     <div>
       <div className="flex justify-between items-center">
         <PageTitle title="Transactions" />
-
         <div className="flex gap-1">
           <button className="primary-outlined-btn">Deposit</button>
-          <button className="primary-contained-btn">Transfer</button>
+          <button className="primary-contained-btn" onClick={handleOpenModal}>Transfer</button>
         </div>
       </div>
-      <Table columns={columns} dataSource={[]} className="mt-2"/>
+      <Table columns={columns} dataSource={[]} className="mt-2" />
+      {showTransferFundsModal && (
+        <TransferFundsModal
+          showTransferModal={showTransferFundsModal} // Correct prop name
+          setShowTransferModal={setShowTransferFundsModal} // Correct prop name
+        />
+      )}
     </div>
   );
 }
