@@ -15,11 +15,7 @@ const transactionSchema = new mongoose.Schema({
     ref:"users",
     required:true
   },
-  type:{
-    type: String,
-    required: true,
-  },
-  reference:{
+  description:{
     type: String,
     required: true,
   },

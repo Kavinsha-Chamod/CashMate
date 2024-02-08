@@ -4,25 +4,25 @@ const router = require('express').Router();
 const User = require('../models/userModel')
 
 //Transfer money from 1 acc to another
-router.post('/transfer-fund',authMiddleware, async (req,res)=>{
+router.post('/transfer-funds',authMiddleware, async (req,res)=>{
   try {
     //Saving the transaction
     const newTransaction = new Transaction(req.body);
     await newTransaction.save();
 
     //Decrease the senders balance
-    await UserActivation.findByIdAndUpdate(req.body.sender,{
+    await User.findByIdAndUpdate(req.body.sender,{
       $inc: {balance: -req.body.amount},
     })
 
     //Increase the receiver balance
-    await UserActivation.findByIdAndUpdate(req.body.sender,{
+    await User.findByIdAndUpdate(req.body.receiver,{
       $inc: {balance: req.body.amount},
     })
 
     res.send({message:"Transaction Successful", data:newTransaction, success:true})
   } catch (error) {
-    res.send({message:"transaction Failed", data: error.message, success:false})
+    res.send({message:"Transaction Failed", data: error.message, success:false})
   }
 })
 

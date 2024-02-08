@@ -1,11 +1,12 @@
 import React from 'react'
-import {Modal, Form} from 'antd'
-import {useDispatch} from 'react-redux'
-import { VerifyAccount } from '../api/transaction'
+import {Modal, Form, message} from 'antd'
+import {useDispatch, useSelector} from 'react-redux'
+import { VerifyAccount, TransferFunds } from '../api/transaction'
 //import { ShowLoading, HideLoading } from '../redux/loaderSlice'
 
   export default function TransferFundsModal({  showTransferModal, setShowTransferModal, reloadData}) {
 
+    const {user} = useSelector(state => state.users)
     const [isVerified, setIsVerified] = React.useState('')
     const [form] = Form.useForm();
     const dispatch = useDispatch();
@@ -29,7 +30,30 @@ import { VerifyAccount } from '../api/transaction'
       setIsVerified('false')
     }
     }
-
+    
+    const onFinish= async(values)=>{
+      try {
+        //dispatch(ShowLoading());
+        const payload ={
+          ...values,
+          sender: user._id,
+          description: values.description || "No description",
+          status: "success",
+        }
+        const res = await TransferFunds(payload)
+        if(res.success){
+          //setShowTransferFundsModal(false)
+          message.success(res.message);
+          setShowTransferModal(false);
+        }else{
+          message.error(res.message);
+        }
+        //dispatch(HideLoading());
+      } catch (error) {
+        //dispatch(HideLoading());
+        message.error(error.message)
+      }
+    }
 
   return (
     
@@ -40,7 +64,9 @@ import { VerifyAccount } from '../api/transaction'
        onCancel={()=> setShowTransferModal(false)}
        footer={null}
     >
-      <Form layout='vertical' form={form}>
+      <Form layout='vertical' form={form}
+      onFinish={onFinish}
+      >
        <div className='flex gap-2 items-center'>
        <Form.Item label="Account Number" name="receiver" className='w-100'>
            <input type="text"/>
@@ -55,14 +81,23 @@ import { VerifyAccount } from '../api/transaction'
          Invalid Account
         </div>)}
 
-        <Form.Item label="Amount" name="amount">
-           <input type="text"/>
+        <Form.Item label="Amount" name="amount"
+        rules={[
+          {
+            required:true,
+            message: "Please input your amount!"
+          },{
+            max: user.balance,
+            message: "Insfficient Balance",
+          }
+        ]}>
+           <input type="number" max={user.balance}/>
        </Form.Item>
        <Form.Item label="Description" name="description">
            <textarea type="text"/>
        </Form.Item>
         <div className='flex justify-end gap-1'>
-        <button className='primary-contained-btn'>Transfer</button>
+        {isVerified ==='true' &&  <button className='primary-contained-btn'>Transfer</button> }
         <button className='primary-outlined-btn'>Cancel</button>
 
         </div>
