@@ -31,10 +31,8 @@
   color: white !important;
 }
 .active-menu-item{
-  border: 1px solid var(--secondary);
   border-radius: 2px;
   color: var(--secondary) !important;
-  padding: 5px 10px;
 }
 .active-menu-item h1{
   color: var(--secondary) !important;
@@ -49,5 +47,5 @@
   width: 100%;
 }
 .content{
-  padding: 15px;
+  padding-top: 15px;
 }
