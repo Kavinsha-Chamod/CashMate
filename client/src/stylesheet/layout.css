@@ -1,9 +1,9 @@
 .layout{
   display: flex;
   padding: 15px;
-  height: 100vh;
+  height: 90vh;
   gap: 15px;
-  width: 100%;
+  width: 95%;
 }
 .sidebar{
   background-color: var(--primary);

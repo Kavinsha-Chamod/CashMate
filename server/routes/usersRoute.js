@@ -97,5 +97,26 @@ router.post("/get-all-users", authMiddleware, async (req, res) => {
   }
 })
 
+//Update user verified status
+router.post('/update-user-verified-status',authMiddleware, async (req,res) =>{
+  try {
+    await User.findByIdAndUpdate(req.body.selectedUser, {
+      isVerified: req.body.isVerified,
+    })
+    res.send({
+      data: null,
+      message: "User verified status updated successfully",
+      success: true,
+    })
+  } catch (error) {
+    res.send({
+      data: null,
+      message: error.message,
+      success: false,
+    })
+  }
+})
+
+
 module.exports = router;
 

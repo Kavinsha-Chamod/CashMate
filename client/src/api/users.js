@@ -39,3 +39,13 @@ export const GetAllUsers = async () => {
     return error.response.data;
   }
 }
+
+//Update user verified status
+export const UpdateUserVerifiedStatus = async (payload) => {
+  try {
+    const {data} = await axiosInstance.post("/api/users/update-user-verified-status", payload);
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+}

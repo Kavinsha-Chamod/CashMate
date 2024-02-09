@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { GetAllUsers } from '../api/users'
+import { GetAllUsers, UpdateUserVerifiedStatus } from '../api/users'
 import { Table, message } from 'antd'
 import PageTitle from '../components/PageTitle'
 
@@ -24,6 +24,23 @@ export default function Users() {
     }
   }
 
+  const updateStatus = async (record, isVerified) =>{
+    try {
+      const res = await UpdateUserVerifiedStatus({
+        selectedUser: record._id,
+        isVerified,
+      })
+      if(res.success){
+        message.success(res.message)
+        getData()
+      }else{
+        message.error(res.message)
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
   const colums = [
     {
       title:"First Name",
@@ -37,7 +54,26 @@ export default function Users() {
     },{
       title:"Mobile Number",
       dataIndex: "phoneNumber",
-    },
+    },{
+      title: "Account Status",
+      dataIndex: "isVerified",
+      render: (text,record) =>{
+        return text ? "Verified" : "Pending"
+      }
+    },{
+      title:"Actions",
+      dataIndex:"actions",
+      render:(text, record) =>{
+        return <div className='flex gap-1'>
+        {record.isVerified ?(
+          <button className='primary-outlined-btn' onClick={()=> updateStatus(record, false)}>Suspend</button>
+          ):(
+          <button className='primary-outlined-btn' onClick={()=> updateStatus(record, true)}>Activate</button>
+
+          )}
+        </div>
+      }
+    }
   ]
 
   useEffect(()=>{
