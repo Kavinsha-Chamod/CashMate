@@ -88,12 +88,9 @@ import {SendRequest} from '../api/request'
           {
             required:true,
             message: "Please input your amount!"
-          },{
-            max: user.balance,
-            message: "Insfficient Balance",
           }
         ]}>
-           <input type="number" max={user.balance}/>
+           <input type="number"/>
        </Form.Item>
        <Form.Item label="Description" name="description">
            <textarea type="text"/>

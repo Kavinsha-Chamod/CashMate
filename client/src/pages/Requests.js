@@ -1,44 +1,33 @@
 import React, { useEffect } from 'react'
-import {Tabs, message} from 'antd'
+import {Table, Tabs, message} from 'antd'
 import PageTitle from '../components/PageTitle';
 import RequestModal from './RequestModal';
-import { GetAllRequestsByUser } from '../api/request';
-import { useDispatch } from 'react-redux';
+import { GetAllRequestsByUser, UpdateRequestStatus } from '../api/request';
+import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment' //used for get time and date
 
 const {TabPane} = Tabs;
 
 export default function Requests() {
-  
+
+  const {user} = useSelector(state => state.users)
   const dispatch = useDispatch();
   const [data, setData] = React.useState([])
   const [showRequestModal, setShowRequestModal] = React.useState(false)
 
-  const columns =[
-  {
-    title:"Request Id",
-    dataIndex: "_id",
-  },{
-    title:"User",
-    dataIndex: "user",
-  },{
-    title:"Amount",
-    dataIndex: "amount", 
-  },
-  {
-    title:"Date",
-    dataIndex: "date" 
-  },{
-    title:"Status",
-    dataIndex: "status" 
-  },
-  ]
 
   const getData = async () =>{
     try {
      //dispatch(ShowLoading())
      const res = await GetAllRequestsByUser()
      if(res.success){
-       setData(res.data)
+      const sendData = res.data.filter((item)=> item.sender._id === user._id)
+      const receivedData = res.data.filter((item)=> item.receiver._id === user._id)
+
+       setData({
+        sent: sendData,
+        received: receivedData
+       })
      }
      //dispatch(HideLoading())
     } catch (error) {
@@ -51,6 +40,68 @@ export default function Requests() {
      getData();
    },[])
 
+  const updateStatus = async (record, status) =>{
+    try {
+      //dispatch(ShowLoading())
+      const res = await UpdateRequestStatus({
+           ...record,
+           status
+      })
+      //dispatch(HideLoading())
+      if(res.success){
+        message.success(res.message);
+        getData();
+      }else{
+        message.error(res.message)
+      }
+    } catch (error) {
+      //dispatch(HideLoading())
+      message.error.apply(error.message)
+    }
+  }
+
+
+  const columns =[
+  {
+    title:"Date",
+    dataIndex: "date" ,
+    render(text, record){
+      return moment(record.createdAt).format("DD/MM/YYYY hh:mm A")
+    }
+  },{
+    title:"Request Id",
+    dataIndex: "_id",
+  },{
+    title:"Sender",
+    dataIndex: "sender",
+    render(sender){
+      return sender.firstName +" "+sender.lastName
+    },
+  },{
+    title:"Receiver",
+    dataIndex:"receiver",
+    render(receiver){
+      return receiver.firstName +" "+receiver.lastName
+    },
+  },{
+    title:"Amount",
+    dataIndex: "amount", 
+  },{
+    title:"Status",
+    dataIndex: "status" 
+  },{
+    title:"Action",
+    dataIndex:"action",
+    render: (text,record)=>{
+      if(record.status === 'Pending' && record.receiver._id === user._id){
+        return <div className='flex gap-1'>
+         <h1 className='text-sm underline' onClick={()=> updateStatus(record,"Accepted")}>Accept</h1>
+         <h1 className='text-sm underline' onClick={()=> updateStatus(record,"Rejected")}>Reject</h1>
+        </div>
+      }
+    }
+  }
+  ]
 
   return (
     <div>
@@ -59,8 +110,12 @@ export default function Requests() {
     <button className='primary-outlined-btn' onClick={()=> setShowRequestModal(true)}>Request Money</button>
     </div>
     <Tabs defaultActiveKey="1">
-      <TabPane tab="Sent" key="1">Sent</TabPane>
-      <TabPane tab="Received" key="2">Received</TabPane>
+      <TabPane tab="Sent" key="1">
+        <Table columns={columns} dataSource={data.sent}/>
+      </TabPane>
+      <TabPane tab="Received" key="2">
+      <Table columns={columns} dataSource={data.received}/>
+      </TabPane>
     </Tabs>
     {showRequestModal && (
       <RequestModal 
