@@ -2,6 +2,7 @@ import React from 'react'
 import {Modal, Form, message} from 'antd'
 import {useDispatch, useSelector} from 'react-redux'
 import { VerifyAccount, TransferFunds } from '../api/transaction'
+import { ReloadUser } from '../redux/userSlice'
 //import { ShowLoading, HideLoading } from '../redux/loaderSlice'
 
   export default function TransferFundsModal({  showTransferModal, setShowTransferModal, reloadData}) {
@@ -46,6 +47,7 @@ import { VerifyAccount, TransferFunds } from '../api/transaction'
           //setShowTransferFundsModal(false)
           message.success(res.message);
           setShowTransferModal(false);
+          dispatch(ReloadUser(true))
         }else{
           message.error(res.message);
         }

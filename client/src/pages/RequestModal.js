@@ -34,6 +34,10 @@ import {SendRequest} from '../api/request'
     
     const onFinish= async(values)=>{
       try {
+        if(values.amount > user.balance){
+          message.error("Insufficient Money")
+          return;
+        }
         //dispatch(ShowLoading());
         const payload ={
           ...values,

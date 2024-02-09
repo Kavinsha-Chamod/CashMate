@@ -3,11 +3,11 @@ import { message } from 'antd';
 import { GetUserInfo } from '../../src/api/users';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { SetUser } from '../redux/userSlice';
+import { SetUser,ReloadUser } from '../redux/userSlice';
 import DefaultLayout from './DefaultLayout';
 
 export default function ProtectedRoute(props) {
-  const {user} = useSelector(state=>state.users)
+  const {user, reloadUser} = useSelector(state=>state.users)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,11 +20,19 @@ export default function ProtectedRoute(props) {
         message.error(res.message);
         navigate("/login");
       }
+      dispatch(ReloadUser(false))
     } catch (error) {
       navigate("/login");
       message.error(error.message);
     }
   }
+
+  useEffect(()=>{
+    if(reloadUser){
+      getData();
+    }
+    
+  },[reloadUser])
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
