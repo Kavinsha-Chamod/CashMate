@@ -87,8 +87,8 @@ export default function Transactions() {
       <div className="flex justify-between items-center">
         <PageTitle title="Transactions" />
         <div className="flex gap-1">
-          <button className="primary-outlined-btn" onClick={() => setShowDepositModal(true)}>Deposit</button>
-          <button className="primary-contained-btn" onClick={handleOpenModal}>Transfer</button>
+          <button className="primary-outlined-btn" onClick={() => setShowDepositModal(true)}>Deposit Money</button>
+          <button className="primary-contained-btn" onClick={handleOpenModal}>Transfer Money</button>
         </div>
       </div>
       <Table columns={columns} dataSource={data} className="mt-2" />

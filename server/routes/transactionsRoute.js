@@ -77,7 +77,7 @@ router.post('/deposit-funds', authMiddleware, async (req, res) => {
     // Create a charge
     const charge = await stripe.charges.create({
       amount: amountInCents,
-      currency: 'usd', // Change currency to 'usd' for Stripe
+      currency: 'LKR', // Change currency to 'usd' for Stripe
       customer: customer.id,
       receipt_email: token.email,
       description: 'Deposited to CashMate',

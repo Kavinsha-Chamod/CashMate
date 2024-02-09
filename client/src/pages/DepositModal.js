@@ -41,7 +41,7 @@ export default function DepositModal({ showDepositModal, setShowDepositModal, re
           <input type="number"/>
         </Form.Item>
         <div className='flex justify-end gap-1'>
-        <StripeCheckout token={onToken} currency='USD' amount={Math.round(form.getFieldValue("amount") * 100)}  shippingAddress stripeKey="pk_test_51OhpGBBfZaAi9d7acbEaTLlA141mfqkC4loZ1db9U6XpNzDyiMm2Gnzd5N2SyBm5bJqIP8k3N2JuTtFkESboJri800YFYfxQZp">
+        <StripeCheckout token={onToken} currency='LKR' amount={Math.round(form.getFieldValue("amount") * 100)}  shippingAddress stripeKey="pk_test_51OhpGBBfZaAi9d7acbEaTLlA141mfqkC4loZ1db9U6XpNzDyiMm2Gnzd5N2SyBm5bJqIP8k3N2JuTtFkESboJri800YFYfxQZp">
         <button className='primary-contained-btn'>Deposit</button>
         </StripeCheckout>
         <button className='primary-outlined-btn'>Cancel</button>
