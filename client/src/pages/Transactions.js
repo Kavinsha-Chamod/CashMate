@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import {Table, message} from "antd"
 import TransferFundsModal from "./TransferFundsModal";
@@ -17,6 +17,10 @@ export default function Transactions() {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.users)
   const [showDepositModal, setShowDepositModal] = React.useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
+
   //antd table formate is this
   const columns = [
     {
@@ -54,14 +58,13 @@ export default function Transactions() {
         </div>
       }
     },{
-      title:"Reference",
+      title:"Description",
       dataIndex: "description",
     },{
       title:"Status",
       dataIndex: "status",
     },
   ]
-
 
   const getData = async () =>{
    try {
@@ -81,21 +84,32 @@ export default function Transactions() {
     getData();
   },[])
 
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
 
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between">
         <PageTitle title="Transactions" />
         <div className="flex gap-1">
           <button className="primary-outlined-btn" onClick={() => setShowDepositModal(true)}>Deposit Money</button>
           <button className="primary-contained-btn" onClick={handleOpenModal}>Transfer Money</button>
         </div>
       </div>
-      <Table columns={columns} dataSource={data} className="mt-2" />
+      <Table columns={columns} dataSource={data} className="mt-2" 
+      pagination={{ 
+        pageSize: pageSize,
+        total: data.length,
+        onChange: handlePageChange,
+        current: currentPage,
+      }}
+      />
       {showTransferFundsModal && (
         <TransferFundsModal
-          showTransferModal={showTransferFundsModal} // Correct prop name
-          setShowTransferModal={setShowTransferFundsModal} // Correct prop name
+          showTransferModal={showTransferFundsModal} 
+          setShowTransferModal={setShowTransferFundsModal}
           reloadData={getData}
           />
       )}

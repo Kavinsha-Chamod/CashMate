@@ -101,7 +101,7 @@ import {SendRequest} from '../api/request'
        </Form.Item>
         <div className='flex justify-end gap-1'>
         {isVerified ==='true' &&  <button className='primary-contained-btn'>Request</button> }
-        <button className='primary-outlined-btn'>Cancel</button>
+        <button className='primary-outlined-btn'onClick={()=>setShowRequestModal(false)}>Cancel</button>
 
         </div>
       </Form>

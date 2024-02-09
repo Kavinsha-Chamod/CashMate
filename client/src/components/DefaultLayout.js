@@ -46,12 +46,12 @@ export default function DefaultLayout({ children }) {
   const adminMenu = [
     {
       title: "Home",
-      icon: <i className="ri-user-settings-line"></i>,
+      icon: <i className="ri-home-7-line"></i>,
       path: "/",
     },
     {
       title: "Users",
-      icon: <i className="ri-home-7-line"></i>,
+      icon: <i className="ri-user-settings-line"></i>,
       path: "/users",
     },
     {
@@ -72,10 +72,12 @@ export default function DefaultLayout({ children }) {
     {
       title: "Logout",
       icon: <i className="ri-logout-box-line"></i>,
-      onClick: (e) => {
-        e.preventDefault();
-        localStorage.removeItem("token");
-        navigate("/login");
+      onClick: () => {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
       },
       path: "/login",
     },

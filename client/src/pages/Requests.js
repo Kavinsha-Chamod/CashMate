@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Tabs, message } from "antd";
 import PageTitle from "../components/PageTitle";
 import RequestModal from "./RequestModal";
@@ -14,6 +14,10 @@ export default function Requests() {
   const dispatch = useDispatch();
   const [data, setData] = React.useState([]);
   const [showRequestModal, setShowRequestModal] = React.useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
+
 
   const getData = async () => {
     try {
@@ -68,6 +72,12 @@ export default function Requests() {
       message.error.apply(error.message);
     }
   };
+
+  const handlePageChange = (page, pageSize) => {
+    setCurrentPage(page);
+    setPageSize(pageSize);
+  };
+
 
   const columns = [
     {
@@ -145,7 +155,14 @@ export default function Requests() {
           <Table columns={columns} dataSource={data.sent} />
         </TabPane>
         <TabPane tab="Received" key="2">
-          <Table columns={columns} dataSource={data.received} />
+          <Table columns={columns} dataSource={data.received} 
+          pagination={{ 
+            pageSize: pageSize,
+            total: data.length,
+            onChange: handlePageChange,
+            current: currentPage,
+          }}
+          />
         </TabPane>
       </Tabs>
       {showRequestModal && (

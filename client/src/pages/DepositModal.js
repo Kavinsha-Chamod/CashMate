@@ -3,7 +3,7 @@ import { Modal, Form, message } from 'antd';
 import StripeCheckout from 'react-stripe-checkout';
 import { DepositFunds } from '../api/transaction';
 import {useDispatch} from 'react-redux';
-
+import { ReloadUser } from '../redux/userSlice'
 
 export default function DepositModal({ showDepositModal, setShowDepositModal, reloadData }) {
 
@@ -18,6 +18,7 @@ export default function DepositModal({ showDepositModal, setShowDepositModal, re
         reloadData();
         setShowDepositModal(false)
         message.success(res.message)
+        dispatch(ReloadUser(true))
       }else{
         message.error(res.message)
       }
@@ -44,7 +45,7 @@ export default function DepositModal({ showDepositModal, setShowDepositModal, re
         <StripeCheckout token={onToken} currency='LKR' amount={Math.round(form.getFieldValue("amount") * 100)}  shippingAddress stripeKey="pk_test_51OhpGBBfZaAi9d7acbEaTLlA141mfqkC4loZ1db9U6XpNzDyiMm2Gnzd5N2SyBm5bJqIP8k3N2JuTtFkESboJri800YFYfxQZp">
         <button className='primary-contained-btn'>Deposit</button>
         </StripeCheckout>
-        <button className='primary-outlined-btn'>Cancel</button>
+        <button className='primary-outlined-btn'onClick={()=>setShowDepositModal(false)}>Cancel</button>
         </div>
         </Form>
       </div>

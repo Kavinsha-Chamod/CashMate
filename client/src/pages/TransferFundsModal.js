@@ -101,7 +101,7 @@ import { ReloadUser } from '../redux/userSlice'
        </Form.Item>
         <div className='flex justify-end gap-1'>
         {isVerified ==='true' &&  <button className='primary-contained-btn'>Transfer</button> }
-        <button className='primary-outlined-btn'>Cancel</button>
+        <button className='primary-outlined-btn'onClick={()=>setShowTransferModal(false)}>Cancel</button>
 
         </div>
       </Form>

@@ -21,7 +21,7 @@
 }
 .menu-item{
   display: flex;
-  align-items: center;
+  align-items: self-end;
   gap: 15px;
   color: white;
   padding: 5px;
