@@ -2,6 +2,7 @@ const router = require("express").Router();
 const authMiddleware = require("../middlewares/authMiddleware")
 const Request = require("../models/requestModel")
 const User = require("../models/userModel")
+const Transaction = require("../models/transactionModel")
 
 //Get all requests for a user
 router.post("/get-all-requests-by-user", authMiddleware, async (req,res) =>{
@@ -10,7 +11,7 @@ router.post("/get-all-requests-by-user", authMiddleware, async (req,res) =>{
       $or: [{sender: req.body.userId},{receiver: req.body.userId}],
     })
     .populate("sender")
-    .populate("receiver")
+    .populate("receiver").sort({createdAt: -1})
 
     res.send({data: requests, message: "Requests fetched successfully", success: true})
   } catch (error) {
@@ -55,6 +56,16 @@ router.post("/update-request-status", authMiddleware, async (req, res) => {
       await User.findByIdAndUpdate(request.sender._id, {
         $inc: { balance: request.amount }
       });
+
+      //create a transaction
+      const transaction = new Transaction({
+        sender: req.body.receiver._id,
+        receiver: req.body.sender._id,
+        amount: req.body.amount,
+        description: req.body.description,
+        status: "Success"
+      })
+      await transaction.save()
 
       // Deduct the amount from the receiver's balance
       await User.findByIdAndUpdate(request.receiver._id, {

@@ -61,7 +61,7 @@ import {SendRequest} from '../api/request'
     
     <div>
     <Modal 
-       title="Transfer Money"
+       title="Request Money"
        visible={showRequestModal}
        onCancel={()=> setShowRequestModal(false)}
        footer={null}

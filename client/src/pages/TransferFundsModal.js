@@ -38,7 +38,7 @@ import { VerifyAccount, TransferFunds } from '../api/transaction'
           ...values,
           sender: user._id,
           description: values.description || "No description",
-          status: "success",
+          status: "Success",
         }
         const res = await TransferFunds(payload)
         if(res.success){

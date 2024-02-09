@@ -121,6 +121,7 @@ export default function Requests() {
       <RequestModal 
         showRequestModal={showRequestModal}
         setShowRequestModal={setShowRequestModal}
+        reloadData={getData}
         />
     )}
     </div>
