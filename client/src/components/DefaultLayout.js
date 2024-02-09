@@ -32,10 +32,12 @@ export default function DefaultLayout({ children }) {
     {
       title: "Logout",
       icon: <i className="ri-logout-box-line"></i>,
-      onClick: (e) => {
-        e.preventDefault();
-        localStorage.removeItem("token");
-        navigate("/login");
+      onClick: () => {
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
       },
       path: "/login",
     },

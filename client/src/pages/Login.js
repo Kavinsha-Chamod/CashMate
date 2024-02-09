@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Row, Col, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { LoginUser } from '../api/users';
@@ -19,8 +19,7 @@ export default function Login() {
       message.error(error.message)
     }
   };
-
-
+  
   return (
     <div className='bg-primary flex items-center justify-center h-screen'>
     <div className='card w-400 p-2'>

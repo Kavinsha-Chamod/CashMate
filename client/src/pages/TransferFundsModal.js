@@ -42,6 +42,7 @@ import { VerifyAccount, TransferFunds } from '../api/transaction'
         }
         const res = await TransferFunds(payload)
         if(res.success){
+          reloadData();
           //setShowTransferFundsModal(false)
           message.success(res.message);
           setShowTransferModal(false);

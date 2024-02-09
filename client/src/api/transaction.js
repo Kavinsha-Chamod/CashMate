@@ -25,7 +25,17 @@ export const TransferFunds = async (payload) =>{
 //Get all transactions for a user
 export const GetTransactionsOfUser = async ()=>{
   try {
-    const {data} = await axiosInstance.post("/api/transactions//get-all-transactions-by-user")
+    const {data} = await axiosInstance.post("/api/transactions/get-all-transactions-by-user")
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
+//Deposit money using stripe account
+export const DepositFunds = async (payload)=>{
+  try {
+    const {data} = await axiosInstance.post("/api/transactions/deposit-funds",payload)
     return data;
   } catch (error) {
     return error.response.data;

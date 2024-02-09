@@ -3,6 +3,9 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const router = require('express').Router();
 const User = require('../models/userModel')
 
+const stripe = require("stripe")(process.env.stripe_key)
+const {uuid} = require('uuidv4')
+
 //Transfer money from 1 acc to another
 router.post('/transfer-funds',authMiddleware, async (req,res)=>{
   try {
@@ -57,5 +60,54 @@ router.post('/get-all-transactions-by-user', authMiddleware, async (req, res)=>{
     })
    }
 })
+
+//Deposit money using stripe
+router.post('/deposit-funds', authMiddleware, async (req, res) => {
+  try {
+    const { token, amount } = req.body;
+    // Convert amount to cents (assuming it's in LKR)
+    const amountInCents = amount * 100;
+
+    // Create a customer
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id,
+    });
+
+    // Create a charge
+    const charge = await stripe.charges.create({
+      amount: amountInCents,
+      currency: 'usd', // Change currency to 'usd' for Stripe
+      customer: customer.id,
+      receipt_email: token.email,
+      description: 'Deposited to CashMate',
+    }, {
+      idempotencyKey: uuid(),
+    });
+
+    // Save the transaction
+    if (charge.status === "succeeded") {
+      const newTransaction = new Transaction({
+        sender: req.body.userId,
+        receiver: req.body.userId,
+        amount: amount,
+        type: "Deposit",
+        description: 'Stripe Deposit',
+        status: "Success"
+      });
+      await newTransaction.save();
+
+      await User.findByIdAndUpdate(req.body.userId, {
+        $inc: { balance: amount },
+      });
+      res.send({ message: "Transaction successful", data: newTransaction, success: true });
+    } else {
+      res.send({ message: "Transaction failed", data: charge, success: false });
+    }
+  } catch (error) {
+    res.send({ message: "Transaction failed", data: error.message, success: false });
+  }
+});
+
 
 module.exports =router;
