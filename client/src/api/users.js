@@ -29,3 +29,13 @@ export const GetUserInfo = async () => {
     return error.response.data;
   }
 }
+
+//Get all users
+export const GetAllUsers = async () => {
+  try {
+    const {data} = await axiosInstance.post("/api/users/get-all-users");
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
+}

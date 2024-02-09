@@ -46,6 +46,14 @@ router.post("/login", async (req, res) => {
       return res.send({ success: false, message: "Invalid password" });
     }
 
+    //Check weather the user is verified nor
+    if(!user.isVerified){
+      return res.send({
+        success: false,
+        message: "User is not verified yet or has been suspended",
+      })
+    }
+
     // Generate token
     const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
       expiresIn: "1d",
@@ -69,6 +77,23 @@ router.post("/get-user-info", authMiddleware, async (req, res) => {
     res.send({message:"User info fetched successfully", data: user, success: true,})
   } catch (error) {
     res.send({message:error.message, success: false,})
+  }
+})
+
+//Get all users
+router.post("/get-all-users", authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send({
+      message: "Users fetched successfully",
+      success: true,
+      data: users
+    })
+  } catch (error) {
+    res.send({
+      message: error.message,
+      success:false,
+    })
   }
 })
 

@@ -112,9 +112,9 @@ export default function DefaultLayout({ children }) {
         <div className="header flex justify-between items-center">
           <div className="text-white">
             {collapsed ? (
-              <i className="ri-close-line" onClick={() => setCollapsed(!collapsed)}></i>
-            ) : (
               <i className="ri-menu-2-line" onClick={() => setCollapsed(!collapsed)}></i>
+            ) : (
+              <i className="ri-close-line" onClick={() => setCollapsed(!collapsed)}></i>
             )}
           </div>
           <div>
